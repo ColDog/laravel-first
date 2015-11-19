@@ -15,8 +15,13 @@ Route::resource('projects', 'ProjectsController');
 Route::resource('projects.collaborators', 'CollaboratorsController');
 
 Route::get('/', 'PagesController@index');
+Route::get('/home', 'PagesController@dashboard');
 
-Route::controllers([
-    'auth' => 'Auth\AuthController',
-    'password' => 'Auth\PasswordController',
-]);
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Registration routes...
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
