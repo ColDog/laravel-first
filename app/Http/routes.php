@@ -13,3 +13,10 @@
 
 Route::resource('projects', 'ProjectsController');
 Route::resource('projects.collaborators', 'CollaboratorsController');
+
+Route::get('/', 'PagesController@index');
+
+Route::controllers([
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
+]);
