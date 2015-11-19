@@ -5756,4 +5756,10 @@ button.close {
 body {
   padding-top: 50px; }
 
+.add {
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  border-radius: 50px; }
+
 /*# sourceMappingURL=app.css.map */

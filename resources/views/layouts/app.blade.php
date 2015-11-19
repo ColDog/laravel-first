@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <title>Laravel Basic Project Management</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     {!! HTML::style('css/app.css') !!}
     {!! HTML::script('js/bootstrap.min.js') !!}
 </head>
