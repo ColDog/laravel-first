@@ -12,3 +12,4 @@
 */
 
 Route::resource('project', 'ProjectController');
+Route::resource('project.collaborators', 'CollaboratorsController');
