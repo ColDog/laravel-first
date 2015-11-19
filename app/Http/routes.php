@@ -11,5 +11,5 @@
 |
 */
 
-Route::resource('project', 'ProjectController');
-Route::resource('project.collaborators', 'CollaboratorsController');
+Route::resource('projects', 'ProjectsController');
+Route::resource('projects.collaborators', 'CollaboratorsController');
