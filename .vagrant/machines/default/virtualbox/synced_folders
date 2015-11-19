@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/larablog":{"type":null,"mount_options":[],"guestpath":"/home/vagrant/larablog","hostpath":"/Users/colin/Code/current/larablog","disabled":false},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/colin/Code/current/larablog","disabled":false}}}
