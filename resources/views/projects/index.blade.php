@@ -3,6 +3,9 @@
 @section('content')
 
     <h1>Projects</h1>
+
+    <hr>
+
     <table class="table">
         @foreach( $projects as $project )
             <tr>
@@ -23,13 +26,22 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">New Project</h4>
                 </div>
+                {!! Form::open(['route' => 'projects.store']) !!}
                 <div class="modal-body">
-                    {!! Form::open(array('method' => 'POST', 'route' => array('projects.destroy', $project->slug))) !!}
-                    {!! Form::close() !!}
+                    <div class="form-group">
+                        {!! Form::label('name', 'Name') !!}
+                        {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('description', 'Description') !!}
+                        {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
                 </div>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>
