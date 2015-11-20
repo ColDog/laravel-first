@@ -20,6 +20,29 @@
                         @endforelse
                     </div>
                 </div>
+
+                <div class="panel-footer">
+                    <h5>New Task</h5>
+                    {!! Form::open(['route' => ['projects.tasks.create', $project->id], 'class' => 'form-inline']) !!}
+
+                    <div class="form-group">
+                        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'task name']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::text('slug', null, ['class' => 'form-control', 'placeholder' => 'short description']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::input('date', 'intended_completion', null, ['class' => 'form-control']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::submit('Add Task', ['class' => 'btn btn-primary']) !!}
+                    </div>
+
+                    {!! Form::close() !!}
+                </div>
             </div>
         </div>
 

@@ -110,8 +110,7 @@ class ProjectsController extends Controller
 
         $project->update($request->all());
 
-        dd($request->input('user_list'));
-//        $project->collaborators()->sync($request->input('user_list'));
+        $project->collaborators()->sync($request->input('users'));
 
         return redirect('/projects')->with([
             'success' => 'Successfully edited project.'
