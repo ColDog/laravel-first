@@ -62,8 +62,9 @@ class ProjectsController extends Controller
                 ->withInput();
         }
 
+//        dd($request->all());
         $project = Project::create($request->all());
-        $project->collaborators()->sync($request->input('user_list'));
+        $project->collaborators()->sync($request->input('users'));
         return redirect('/projects')->with([
             'success' => 'Successfully created project.'
         ]);
@@ -91,11 +92,24 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required|unique'
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
         ]);
-        $project = Project::findOrFail($id)->update($request);
-        $project->collaborators()->sync($request->input('user_list'));
+
+        $project = Project::findOrFail($id);
+
+
+        if ($validator->fails()) {
+            return  Redirect::route('projects', array('id' => $project->id))
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $project->update($request->all());
+
+        dd($request->input('user_list'));
+//        $project->collaborators()->sync($request->input('user_list'));
+
         return redirect('/projects')->with([
             'success' => 'Successfully edited project.'
         ]);

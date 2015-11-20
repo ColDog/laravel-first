@@ -16,6 +16,7 @@ class Project extends Model
 
     public function collaborators()
     {
-        return $this->hasMany('App\Collaborator');
+        return $this->belongsToMany('App\User', 'collaborators', 'project_id', 'user_id');
     }
+
 }

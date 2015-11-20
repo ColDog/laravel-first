@@ -8,13 +8,27 @@
 
     <table class="table">
         <thead>
-        <tr><th>Edit</th><th>Name</th><th>Description</th></tr>
+        <tr><th>Name</th><th>Collaborators</th><th>Description</th><th></th><th></th></tr>
         </thead>
         @foreach( $projects as $project )
             <tr>
-                <td><a href="/projects/{{ $project->id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
                 <td>{{ $project->name }}</td>
+                <td>
+                    @foreach($project->collaborators()->get() as $collaborator)
+                        <a href="/users/{{ $collaborator->id }}" class="btn-xs btn-default">{{ $collaborator->name }}</a>
+                    @endforeach
+                </td>
                 <td>{{ str_limit($project->description, $limit = 150, $end = '...') }}</td>
+                <td>
+                    <a class="btn btn-primary" href="/projects/{{ $project->id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                </td>
+                <td>
+                    <form action="/projects/{{ $project->id }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                        <button class="btn btn-danger glyphicon glyphicon-trash"></button>
+                    </form>
+                </td>
             </tr>
         @endforeach
     </table>
