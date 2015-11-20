@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use \App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -27,7 +28,19 @@ class ProjectsController extends Controller
     public function index()
     {
         $projects = Project::all();
-        return view('projects.index', compact('projects'));
+        $users = User::lists('name', 'id');
+        return view('projects.index', compact('projects', 'users'));
+    }
+
+    /**
+     * Display a create form for the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $users = User::lists('name', 'id');
+        return view('projects.index', compact('users'));
     }
 
     /**
@@ -38,8 +51,14 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        Project::create($request->all());
-        return redirect('/projects');
+        $this->validate($request, [
+            'name' => 'required|unique'
+        ]);
+        $project = Project::create($request->all());
+        $project->collaborators()->sync($request->input('user_list'));
+        return redirect('/projects')->with([
+            'success' => 'Successfully created project.'
+        ]);
     }
 
     /**
@@ -55,17 +74,6 @@ class ProjectsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -74,7 +82,14 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique'
+        ]);
+        $project = Project::findOrFail($id)->update($request);
+        $project->collaborators()->sync($request->input('user_list'));
+        return redirect('/projects')->with([
+            'success' => 'Successfully edited project.'
+        ]);
     }
 
     /**
@@ -85,6 +100,9 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Project::findOrFail($id)->destroy();
+        return redirect('/projects')->with([
+            'success' => 'Successfully deleted project.'
+        ]);
     }
 }

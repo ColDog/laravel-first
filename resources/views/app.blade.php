@@ -36,11 +36,26 @@
         </div>
     </div>
 </nav>
+@if(session('success'))
+    <div class="alert alert-success">
+        <button id="flashes" class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ session('success') }}
+    </div>
+@elseif(session('danger'))
+    <div class="alert alert-danger">
+        <button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ session('danger') }}
+    </div>
+@endif
 
 
 <main class="container-fluid">
     @yield('content')
 </main>
+
+<script>
+    $('div#flashes').wait(3000).fadeOut()
+</script>
 
 </body>
 </html>

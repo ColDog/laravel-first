@@ -30,22 +30,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">New Project</h4>
                 </div>
-                {!! Form::open(['route' => 'projects.store']) !!}
-                <div class="modal-body">
-                    <div class="form-group">
-                        {!! Form::label('name', 'Name') !!}
-                        {!! Form::text('name', null, ['class' => 'form-control']) !!}
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('description', 'Description') !!}
-                        {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Cancel</button>
-                </div>
-                {!! Form::close() !!}
+                @include('projects.create')
             </div>
         </div>
     </div>
