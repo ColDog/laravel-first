@@ -10,6 +10,15 @@ use App\Http\Controllers\Controller;
 
 class ProjectsController extends Controller
 {
+
+    /**
+     * ProjectsController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
