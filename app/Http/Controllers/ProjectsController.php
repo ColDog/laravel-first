@@ -63,7 +63,11 @@ class ProjectsController extends Controller
         }
 
         $project = Project::create($request->all());
-        $project->collaborators()->sync($request->input('users'));
+
+        if ($request->input('users')) {
+            $project->collaborators()->sync($request->input('users'));
+        }
+
         return redirect('/projects')->with([
             'success' => 'Successfully created project.'
         ]);

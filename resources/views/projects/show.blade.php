@@ -13,11 +13,11 @@
 
                 <div class="panel-body">
                     <div class="list-group">
-                        {{--@forelse($project->tasks()->get() as $task)--}}
-                            {{--<li>{{ $task }}</li>--}}
-                        {{--@empty--}}
-                            {{--<h4>No Tasks Found</h4>--}}
-                        {{--@endforelse--}}
+                        @forelse($project->tasks()->get() as $task)
+                            <li>{{ $task }}</li>
+                        @empty
+                            <h4>No Tasks Found</h4>
+                        @endforelse
                     </div>
                 </div>
             </div>

@@ -19,4 +19,9 @@ class Project extends Model
         return $this->belongsToMany('App\User', 'collaborators', 'project_id', 'user_id');
     }
 
+    public function tasks()
+    {
+        return $this->belongsTo('App\Task');
+    }
+
 }
