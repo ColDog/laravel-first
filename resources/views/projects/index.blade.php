@@ -7,8 +7,12 @@
     <hr>
 
     <table class="table">
+        <thead>
+        <tr><th>Edit</th><th>Name</th><th>Description</th></tr>
+        </thead>
         @foreach( $projects as $project )
             <tr>
+                <td><span class="glyphicon glyphicon-pencil"></span></td>
                 <td>{{ $project->name }}</td>
                 <td>{{ str_limit($project->description, $limit = 150, $end = '...') }}</td>
             </tr>

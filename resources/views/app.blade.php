@@ -42,7 +42,5 @@
     @yield('content')
 </main>
 
-{{ Auth::user() }}
-
 </body>
 </html>
