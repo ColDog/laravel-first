@@ -21,7 +21,7 @@ class Project extends Model
 
     public function tasks()
     {
-        return $this->belongsTo('App\Task');
+        return $this->hasMany('App\Task', 'project_id');
     }
 
 }

@@ -12,18 +12,35 @@
                 </div>
 
                 <div class="panel-body">
-                    <div class="list-group">
+
+                    <div class="row">
                         @forelse($project->tasks()->get() as $task)
-                            <li>{{ $task }}</li>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="thumbnail">
+                                    <div class="caption">
+                                        <span data-task-id="{{ $task->id }}" style="color: green;" class="finish close glyphicon glyphicon-check"></span>
+                                        <h3>{{ $task->name }}</h3>
+                                        <p>{{ $task->slug }}</p>
+                                        <small>Target Date: {{ $task->intended_completion }}</small>
+                                        <hr>
+                                        <h6>Description</h6>
+                                        <small>{{ $task->description }}</small>
+                                        @if(!$task->assignedTo()->get()->isEmpty())
+                                            <h6>Assigned to: {{ $task->assignedTo()->get() }}</h6>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                         @empty
                             <h4>No Tasks Found</h4>
                         @endforelse
                     </div>
+
                 </div>
 
                 <div class="panel-footer">
                     <h5>New Task</h5>
-                    {!! Form::open(['route' => ['projects.tasks.create', $project->id], 'class' => 'form-inline']) !!}
+                    {!! Form::open(['route' => ['projects.tasks.store', $project->id], 'class' => 'form-inline']) !!}
 
                     <div class="form-group">
                         {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'task name']) !!}

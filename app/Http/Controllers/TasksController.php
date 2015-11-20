@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Project;
 
 class TasksController extends Controller
 {
@@ -16,9 +18,28 @@ class TasksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($projectId, Request $request)
     {
-        dd($request);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect(route('projects', ['id' => $projectId]))
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $project = Project::findOrFail($projectId);
+        $task = new Task($request->all());
+        $task->project_id = $project->id;
+        $task->save();
+
+        return redirect(route('projects.show', ['id' => $projectId]))->with([
+            'success' => 'Successfully created project.'
+        ]);
+
     }
 
     /**
