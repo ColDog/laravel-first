@@ -23,10 +23,15 @@
 
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">One</a></li>
-                <li><a href="/">One</a></li>
-                <li><a href="/">One</a></li>
-                <li><a href="/">One</a></li>
+                @if(Auth::check())
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name  }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="divider"></li>
+                            <li>{!! HTML::link('auth/logout', 'Logout') !!}</li>
+                        </ul>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>
@@ -36,6 +41,8 @@
 <main class="container-fluid">
     @yield('content')
 </main>
+
+{{ Auth::user() }}
 
 </body>
 </html>
