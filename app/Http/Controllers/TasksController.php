@@ -54,6 +54,22 @@ class TasksController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $projectId
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function completion($projectId, Request $request)
+    {
+        $task = Task::findOrFail($request->input('id'));
+        $task->completed = !$task->completed;
+        $task->save();
+        return $task;
+    }
+
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

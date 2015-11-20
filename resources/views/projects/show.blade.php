@@ -1,6 +1,8 @@
 @extends('app')
 
 @section('content')
+    <style>.green { color: green !important; } </style>
+
     <h1>{{ $project->name }}</h1>
     <hr>
     <div class="row">
@@ -18,7 +20,7 @@
                             <div class="col-sm-6 col-md-4">
                                 <div class="thumbnail">
                                     <div class="caption">
-                                        <span data-task-id="{{ $task->id }}" style="color: green;" class="finish close glyphicon glyphicon-check"></span>
+                                        <span data-task-id="{{ $task->id }}" class="finish close glyphicon glyphicon-check {{ $task->completed ? 'green' : '' }}"></span>
                                         <h3>{{ $task->name }}</h3>
                                         <p>{{ $task->slug }}</p>
                                         <small>Target Date: {{ $task->intended_completion }}</small>
@@ -129,6 +131,17 @@
         </div>
     </div>
 
+
+    <script>
+        $('[data-task-id]').click(function(evt){
+            $(this).toggleClass( 'green' );
+            var id = window.location.pathname.split('/')[2];
+            $.post(
+                '/projects/'+id+'/tasks/completion',
+                {id: $(this).data('task-id'), _token: '{{ csrf_token() }}' }
+            )
+        })
+    </script>
 
 
 @endsection

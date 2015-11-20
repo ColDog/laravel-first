@@ -18,7 +18,7 @@ class CreateTasksTable extends Migration
             $table->string('slug');
             $table->text('description');
             $table->date('intended_completion');
-            $table->date('actual_completion');
+            $table->boolean('completed');
             $table->integer('user_id')->unsigned()->nullable();
             $table->integer('project_id')->unsigned();
             $table->timestamps();
