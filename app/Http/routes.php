@@ -15,7 +15,7 @@ Route::get('/', 'PagesController@index');
 Route::get('/home', 'PagesController@dashboard');
 
 Route::resource('projects', 'ProjectsController');
-Route::resource('projects.collaborators', 'CollaboratorsController');
+Route::resource('projects.tasks', 'TasksController');
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');

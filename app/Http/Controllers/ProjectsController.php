@@ -62,7 +62,6 @@ class ProjectsController extends Controller
                 ->withInput();
         }
 
-//        dd($request->all());
         $project = Project::create($request->all());
         $project->collaborators()->sync($request->input('users'));
         return redirect('/projects')->with([
