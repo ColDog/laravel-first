@@ -13,4 +13,9 @@ class Project extends Model
         'description',
         'actual_completion'
     ];
+
+    public function collaborators()
+    {
+        return $this->hasMany('App\Collaborator');
+    }
 }

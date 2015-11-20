@@ -12,7 +12,7 @@
         </thead>
         @foreach( $projects as $project )
             <tr>
-                <td><span class="glyphicon glyphicon-pencil"></span></td>
+                <td><a href="/projects/{{ $project->id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
                 <td>{{ $project->name }}</td>
                 <td>{{ str_limit($project->description, $limit = 150, $end = '...') }}</td>
             </tr>
@@ -30,7 +30,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">New Project</h4>
                 </div>
-                @include('projects.create')
+                @include('projects.form')
             </div>
         </div>
     </div>

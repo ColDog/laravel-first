@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Project;
 use \App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -40,7 +41,7 @@ class ProjectsController extends Controller
     public function create()
     {
         $users = User::lists('name', 'id');
-        return view('projects.index', compact('users'));
+        return view('projects.create', compact('users'));
     }
 
     /**
@@ -51,9 +52,16 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|unique'
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
         ]);
+
+        if ($validator->fails()) {
+            return redirect('projects/create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $project = Project::create($request->all());
         $project->collaborators()->sync($request->input('user_list'));
         return redirect('/projects')->with([
@@ -70,7 +78,8 @@ class ProjectsController extends Controller
     public function show($id)
     {
         $project = Project::findOrFail($id);
-        return view('projects.show', compact('project'));
+        $users = User::lists('name', 'id');
+        return view('projects.show', compact('project', 'users'));
     }
 
     /**
