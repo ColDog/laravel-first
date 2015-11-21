@@ -82,10 +82,10 @@
                 <div class="panel-body">
                     <div class="list-group">
                         @forelse($project->collaborators()->get() as $collaborator)
-                            <div data-name="{{ $collaborator->name }}" draggable="true" id="{{ $project->id }}" ondragstart="drag(event)" class="list-group-item">
+                            <div data-name="{{ $collaborator->name }}" draggable="true" id="{{ $collaborator->id }}" ondragstart="drag(event)" class="list-group-item">
                                 <a href="/users/{{ $collaborator->id }}">
                                     {{ $collaborator->name }}
-                                    <span class="badge pull-right">tasks: 2</span>
+                                    <span class="badge pull-right">tasks: <span id="badge{{ $collaborator->id }}">{{ $collaborator->tasks()->count() }}</span></span>
                                 </a>
                             </div>
                         @empty
@@ -167,9 +167,14 @@
 
         function dragged(ev, taskId) {
             $('#name'+taskId).text(ev.dataTransfer.getData("name"));
+            var userId = ev.dataTransfer.getData("text");
             $.post(
                 '/projects/'+id+'/tasks/assigned',
-                {userId: ev.dataTransfer.getData("text"), taskId: taskId, _token: '{{ csrf_token() }}' }
+                {userId: userId, taskId: taskId, _token: '{{ csrf_token() }}' },
+                function(data) {
+                    console.log('badge'+userId, data);
+                    $('#badge'+userId).text(data)
+                }
             )
         }
 

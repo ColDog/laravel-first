@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -80,7 +81,7 @@ class TasksController extends Controller
         $task = Task::findOrFail($request->input('taskId'));
         $task->user_id = $request->input('userId');
         $task->save();
-        return $task;
+        return User::find($request->input('userId'))->tasks()->count();
     }
 
 
