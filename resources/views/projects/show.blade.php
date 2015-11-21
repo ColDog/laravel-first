@@ -38,9 +38,7 @@
                                         <hr>
                                         <h6>Description</h6>
                                         <small>{{ $task->description }}</small>
-                                        @if(!$task->assignedTo()->get()->isEmpty())
-                                            <h6>Assigned to: {{ $task->assignedTo()->get() }}</h6>
-                                        @endif
+                                        <h6>Assigned to: <span id="name{{ $task->id }}">{{ $task->user()->get()->isEmpty() ? '' : $task->user()->get()[0]->name }}</span></h6>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +82,7 @@
                 <div class="panel-body">
                     <div class="list-group">
                         @forelse($project->collaborators()->get() as $collaborator)
-                            <div draggable="true" id="{{ $project->id }}" ondragstart="drag(event)" class="list-group-item">
+                            <div data-name="{{ $collaborator->name }}" draggable="true" id="{{ $project->id }}" ondragstart="drag(event)" class="list-group-item">
                                 <a href="/users/{{ $collaborator->id }}">
                                     {{ $collaborator->name }}
                                     <span class="badge pull-right">tasks: 2</span>
@@ -159,7 +157,8 @@
         });
 
         function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.id)
+            ev.dataTransfer.setData("text", ev.target.id);
+            ev.dataTransfer.setData("name", ev.target.dataset.name);
         }
 
         function allow(ev) {
@@ -167,6 +166,7 @@
         }
 
         function dragged(ev, taskId) {
+            $('#name'+taskId).text(ev.dataTransfer.getData("name"));
             $.post(
                 '/projects/'+id+'/tasks/assigned',
                 {userId: ev.dataTransfer.getData("text"), taskId: taskId, _token: '{{ csrf_token() }}' }
