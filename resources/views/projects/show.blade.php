@@ -31,7 +31,14 @@
                             <div class="col-sm-6 col-md-4">
                                 <div class="thumbnail" id="{{ $task->id }}" ondrop="dragged(event, this.id)" ondragover="allow(event)">
                                     <div class="caption">
-                                        <span data-task-id="{{ $task->id }}" class="finish close glyphicon glyphicon-check {{ $task->completed ? 'green' : '' }}"></span>
+
+                                        <form action="/projects/{{ $project->id }}/tasks/{{ $task->id }}" method="POST">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                            <button class="btn-link pull-right glyphicon glyphicon-remove"></button>
+                                        </form>
+                                        <button data-task-id="{{ $task->id }}" class="btn-link text-default finish pull-right glyphicon glyphicon-check {{ $task->completed ? 'green' : '' }}"></button>
+
                                         <h3>{{ $task->name }}</h3>
                                         <p>{{ $task->slug }}</p>
                                         <small>Target Date: {{ $task->intended_completion }}</small>

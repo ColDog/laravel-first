@@ -111,11 +111,16 @@ class TasksController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  int  $projectId
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($projectId, $id)
     {
-        //
+        Task::findOrFail($id)->delete();
+        return redirect(route('projects.show', ['id' => $projectId]))->with([
+            'success' => 'Successfully removed task.'
+        ]);
+
     }
 }
