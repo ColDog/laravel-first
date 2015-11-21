@@ -44,17 +44,6 @@ class TasksController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Add the completion flag resource.
      *
      * @param  int  $projectId
@@ -84,28 +73,30 @@ class TasksController extends Controller
         return User::find($request->input('userId'))->tasks()->count();
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  int  $projectId
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $projectId, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect(route('projects', ['id' => $projectId]))
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        Task::findOrFail($id)->update($request->all());
+        return redirect(route('projects.show', ['id' => $projectId]))->with([
+            'success' => 'Successfully updated task.'
+        ]);
     }
 
     /**

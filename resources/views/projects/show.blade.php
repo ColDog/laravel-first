@@ -1,6 +1,7 @@
 @extends('app')
 
 @section('content')
+    <script> var id = window.location.pathname.split('/')[2]; </script>
     <style>
         .green { color: green !important; }
         [draggable] {
@@ -38,6 +39,16 @@
                                             <button class="btn-link pull-right glyphicon glyphicon-remove"></button>
                                         </form>
                                         <button data-task-id="{{ $task->id }}" class="btn-link text-default finish pull-right glyphicon glyphicon-check {{ $task->completed ? 'green' : '' }}"></button>
+                                        <button
+                                                type="button"
+                                                class="btn-link text-default finish pull-right glyphicon glyphicon-pencil"
+                                                data-toggle="modal"
+                                                data-target="#edit"
+                                                data-name="{{$task->name}}"
+                                                data-slug="{{$task->slug}}"
+                                                data-action="{{'/projects/' . $project->id . '/tasks/' . $task->id }}"
+                                        >
+                                        </button>
 
                                         <h3>{{ $task->name }}</h3>
                                         <p>{{ $task->slug }}</p>
@@ -150,10 +161,42 @@
     </div>
 
 
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Edit Task</h4>
+                </div>
+                <form id="editForm" method="POST" action="">
+                    <div class="modal-body">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="_method" value="PUT">
+
+                        <div class="form-group">
+                            <label for="name" class="control-label">Name:</label>
+                            <input name="name" type="text" class="form-control" id="name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="slug" class="control-label">Slug:</label>
+                            <input name="slug" type="text" class="form-control" id="slug">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
 
     <script>
-        var id = window.location.pathname.split('/')[2];
 
         $('[data-task-id]').click(function(evt){
             $(this).toggleClass( 'green' );
@@ -184,6 +227,14 @@
                 }
             )
         }
+
+        $('#edit').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            $('#editForm').attr('action', button.data('action'));
+            modal.find('#name').val(button.data('name'));
+            modal.find('#slug').val(button.data('slug'));
+        })
 
     </script>
 
