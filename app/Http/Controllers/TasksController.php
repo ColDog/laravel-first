@@ -54,7 +54,7 @@ class TasksController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Add the completion flag resource.
      *
      * @param  int  $projectId
      * @param  \Illuminate\Http\Request  $request
@@ -64,6 +64,21 @@ class TasksController extends Controller
     {
         $task = Task::findOrFail($request->input('id'));
         $task->completed = !$task->completed;
+        $task->save();
+        return $task;
+    }
+
+    /**
+     * Add the assigned user resource.
+     *
+     * @param  int  $projectId
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function assigned($projectId, Request $request)
+    {
+        $task = Task::findOrFail($request->input('taskId'));
+        $task->user_id = $request->input('userId');
         $task->save();
         return $task;
     }

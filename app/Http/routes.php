@@ -17,6 +17,7 @@ Route::get('/home', 'PagesController@dashboard');
 Route::resource('projects', 'ProjectsController');
 Route::resource('projects.tasks', 'TasksController');
 Route::post('projects/{id}/tasks/completion', 'TasksController@completion');
+Route::post('projects/{id}/tasks/assigned', 'TasksController@assigned');
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');

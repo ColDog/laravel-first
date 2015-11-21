@@ -53,9 +53,5 @@
     @yield('content')
 </main>
 
-<script>
-    $('div#flashes').wait(3000).fadeOut()
-</script>
-
 </body>
 </html>

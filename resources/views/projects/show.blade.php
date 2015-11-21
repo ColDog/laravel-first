@@ -1,7 +1,18 @@
 @extends('app')
 
 @section('content')
-    <style>.green { color: green !important; } </style>
+    <style>
+        .green { color: green !important; }
+        [draggable] {
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            /* Required to make elements draggable in old WebKit */
+            -khtml-user-drag: element;
+            -webkit-user-drag: element;
+        }
+    </style>
 
     <h1>{{ $project->name }}</h1>
     <hr>
@@ -18,7 +29,7 @@
                     <div class="row">
                         @forelse($project->tasks()->get() as $task)
                             <div class="col-sm-6 col-md-4">
-                                <div class="thumbnail">
+                                <div class="thumbnail" id="{{ $task->id }}" ondrop="dragged(event, this.id)" ondragover="allow(event)">
                                     <div class="caption">
                                         <span data-task-id="{{ $task->id }}" class="finish close glyphicon glyphicon-check {{ $task->completed ? 'green' : '' }}"></span>
                                         <h3>{{ $task->name }}</h3>
@@ -73,10 +84,12 @@
                 <div class="panel-body">
                     <div class="list-group">
                         @forelse($project->collaborators()->get() as $collaborator)
-                            <a href="/users/{{ $collaborator->id }}" class="list-group-item">
-                                <span class="badge">tasks: 2</span>
-                                {{ $collaborator->name }}
-                            </a>
+                            <div draggable="true" id="{{ $project->id }}" ondragstart="drag(event)" class="list-group-item">
+                                <a href="/users/{{ $collaborator->id }}">
+                                    {{ $collaborator->name }}
+                                    <span class="badge pull-right">tasks: 2</span>
+                                </a>
+                            </div>
                         @empty
                             <h4>No Collaborators Found</h4>
                         @endforelse
@@ -132,15 +145,34 @@
     </div>
 
 
+
+
     <script>
+        var id = window.location.pathname.split('/')[2];
+
         $('[data-task-id]').click(function(evt){
             $(this).toggleClass( 'green' );
-            var id = window.location.pathname.split('/')[2];
             $.post(
                 '/projects/'+id+'/tasks/completion',
                 {id: $(this).data('task-id'), _token: '{{ csrf_token() }}' }
             )
-        })
+        });
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id)
+        }
+
+        function allow(ev) {
+            ev.preventDefault();
+        }
+
+        function dragged(ev, taskId) {
+            $.post(
+                '/projects/'+id+'/tasks/assigned',
+                {userId: ev.dataTransfer.getData("text"), taskId: taskId, _token: '{{ csrf_token() }}' }
+            )
+        }
+
     </script>
 
 
