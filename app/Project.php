@@ -18,8 +18,13 @@ class Project extends Model
     public static function boot()
     {
         parent::boot();
-        Project::saving(function($project){
-            $msg = 'New project created:'.$project->name;
+        Project::updating(function($project){
+            $msg = "<a href='/projects/{$project->id}'>The project: {$project->name} was updated.</a>";
+            Redis::lpush('messages', $msg);
+            Redis::publish('new-message', $msg);
+        });
+        Project::creating(function($project){
+            $msg = "<a href='/projects/{$project->id}'>The project: {$project->name} was created.</a>";
             Redis::lpush('messages', $msg);
             Redis::publish('new-message', $msg);
         });

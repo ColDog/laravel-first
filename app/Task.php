@@ -19,8 +19,15 @@ class Task extends Model
     public static function boot()
     {
         parent::boot();
-        Task::saving(function($task){
-            $msg = 'New task created: '.$task->name;
+        Task::updating(function($task){
+            $project = $task->project()->get();
+            $msg = "<a href='/projects/{$project->id}'>The task, {$task->name}, on {$project->name} was updated.</a>";
+            Redis::lpush('messages', $msg);
+            Redis::publish('new-message', $msg);
+        });
+        Task::creating(function($task){
+            $project = $task->project()->get();
+            $msg = "<a href='/projects/{$project->id}'>The task, {$task->name}, on {$project->name} was created.</a>";
             Redis::lpush('messages', $msg);
             Redis::publish('new-message', $msg);
         });
