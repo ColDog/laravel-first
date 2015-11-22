@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 
 class PagesController extends Controller
@@ -20,6 +21,7 @@ class PagesController extends Controller
     {
         $messages = Redis::lrange('messages', 0, -1);
         $messages = $messages ? $messages : [];
-        return view('dashboard', compact('messages'));
+        $tasks = Auth::user()->tasks()->get();
+        return view('dashboard', compact('messages', 'tasks'));
     }
 }
