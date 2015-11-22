@@ -1,7 +1,6 @@
 @extends('app')
 
 @section('content')
-    <script> var id = window.location.pathname.split('/')[2]; </script>
     <style>
         .green { color: green !important; }
         [draggable] {
@@ -195,9 +194,8 @@
 
 
 
-
     <script>
-
+        var id = window.location.pathname.split('/')[2];
         $('[data-task-id]').click(function(evt){
             $(this).toggleClass( 'green' );
             $.post(

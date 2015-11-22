@@ -25,7 +25,13 @@
                 <div class="panel-body">
                     <ul class="list-group">
                         @forelse($tasks as $task)
-                            <li class="list-group-item">{{ $task->name }}</li>
+                            <li class="list-group-item">
+                                <span class="pull-right glyphicon {{ $task->completed ? 'glyphicon-check' : 'glyphicon-remove' }}"></span>
+                                {{ $task->name }} in
+                                <a href="/projects/{{ $task->project()->get()[0]->id }}">
+                                    <b>{{ $task->project()->get()[0]->name }}</b>
+                                </a>
+                            </li>
                         @empty
                             <li class="list-unstyled"><h4>No Tasks Found</h4></li>
                         @endforelse

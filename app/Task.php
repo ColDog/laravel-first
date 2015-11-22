@@ -20,13 +20,13 @@ class Task extends Model
     {
         parent::boot();
         Task::updating(function($task){
-            $project = $task->project()->get();
+            $project = $task->project()->get()[0];
             $msg = "<a href='/projects/{$project->id}'>The task, {$task->name}, on {$project->name} was updated.</a>";
             Redis::lpush('messages', $msg);
             Redis::publish('new-message', $msg);
         });
         Task::creating(function($task){
-            $project = $task->project()->get();
+            $project = $task->project()->get()[0];
             $msg = "<a href='/projects/{$project->id}'>The task, {$task->name}, on {$project->name} was created.</a>";
             Redis::lpush('messages', $msg);
             Redis::publish('new-message', $msg);
