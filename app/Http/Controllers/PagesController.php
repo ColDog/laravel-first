@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redis;
 
 class PagesController extends Controller
 {
@@ -17,6 +18,8 @@ class PagesController extends Controller
 
     public function dashboard()
     {
-        return view('dashboard');
+        $messages = Redis::get('messages');
+        $messages = $messages ? $messages : [];
+        return view('dashboard', compact('messages'));
     }
 }
