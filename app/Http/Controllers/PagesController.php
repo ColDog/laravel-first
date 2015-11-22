@@ -18,7 +18,7 @@ class PagesController extends Controller
 
     public function dashboard()
     {
-        $messages = Redis::getrange('messages', 0, -1);
+        $messages = Redis::lrange('messages', 0, -1);
         $messages = $messages ? $messages : [];
         return view('dashboard', compact('messages'));
     }
